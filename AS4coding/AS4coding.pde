@@ -8,20 +8,24 @@ boolean gameOver = false;//Determine if the game is over
 boolean hintText = false;//Hint text, disappears after the game ends
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
 
+PImage photo;
 Rect currentRect;//The rect currently moving
 
 void setup(){
  size(400,400); 
+ photo = loadImage("bk2.jpg");
  noStroke();
  
-
+ 
  down = new ArrayList<Rect>();
  currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat initial rect
 }
 
 void draw(){
-background(106,151,188);
-
+ background(106,151,188);
+ image(photo,0,0);
+ photo.resize(400,400);
+ image(photo,0,0);
 for(int i=0;i<down.size();i++)  {  //This loop show the rect that has fallen
   Rect rect = down.get(i);
   rect.display();
