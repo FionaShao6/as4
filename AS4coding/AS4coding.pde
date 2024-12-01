@@ -22,6 +22,15 @@ void setup(){
  down = new ArrayList<Rect>();
  currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat initial rect
 }
+void shiftRectsDown(){
+  for(int i =0; i<down.size(); i++){
+    Rect rect = down.get(i);
+    rect.pos.y +=30;//move down 30
+  }
+  if(dropping){
+   currentRect.pos.y +=30; 
+  }
+ }
 
 void draw(){
  background(106,151,188);
