@@ -1,26 +1,25 @@
 
 class Rect{
   PVector pos;//Rect's x and y(position)
-  float speed;//Left and right movement speed
+  PVector velocity;//Left and right movement speed
+  
   float w;//rect's width
  
   float rectHeight=30;//I fixed the each rect's height=30
   color  randColor; //Set random color
   Rect(float tempX,float tempY, float tempW,float tempSpeed){
     pos = new PVector(tempX, tempY);//Use PVector to store the site
-  
+   velocity = new PVector(tempSpeed,0);
    w=tempW;
-   speed=tempSpeed;
+   
    randColor= color(random(217,255), random(1,164), random(112,195));//Setting color(pink)
  }
 void move(){ //The rect at the top moves left and right, hits the border and bounces back
   if(!dropping){
-   pos.x+= speed;
+   pos.add(velocity);
    if(pos.x>width-w || pos.x <0){
-    speed*=-1;
-    
-   }
-  
+    velocity.x*=-1; 
+   } 
   }
 }
  void display(){
@@ -50,10 +49,12 @@ void move(){ //The rect at the top moves left and right, hits the border and bou
     } 
  }
   void drop(int stackCount){
-    pos.y += 5; //Drop speed
+    pos.y +=velocity.y;
+    velocity.y =5; //Drop speed
    if(pos.y > height - (stackCount+1)*30){/////if a rect exceeds the height of the previous rect during the falling process
     pos.y = height - (stackCount+1)*30;     //then fix its position to the height of the previous rect - 30
-   }
+    velocity.y=0;
+  }
      
  }
   

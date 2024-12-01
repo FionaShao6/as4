@@ -1,11 +1,13 @@
 ArrayList<Rect> down;//Rectangles that have fallen and stacked together
 
 int rectWidth= 200;//Initial rectangle width
-int maxRectCount = 10;//Generate up to 10 rectangles
+int maxRectCount = 100;//Generate up to 100 rectangles
 
 boolean dropping = false;//Whether rect is in the falling state
 boolean gameOver = false;//Determine if the game is over
 boolean hintText = false;//Hint text, disappears after the game ends
+boolean screenDwon = false;//Determine the statement of the screen down
+
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
 
 PImage photo;
@@ -55,7 +57,7 @@ for(int i=0;i<down.size();i++)  {  //This loop show the rect that has fallen
   }
   else{
     rectWidth = (int)currentRect.w;//Use the new rect (after being cut off)
-    iniSpeed += 0.7;  //Move faster
+    iniSpeed += 0.5;  //Move faster
     currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat new rect through class Rect
    
    }
@@ -128,5 +130,4 @@ void drawStart(float x, float y, float size){
   vertex(x - size / 2, y); 
   vertex(x - 0.15 * size, y - 0.15 * size); 
   endShape(CLOSE); 
-
 }
