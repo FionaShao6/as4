@@ -48,6 +48,10 @@ void move(){ //The rect at the top moves left and right, hits the border and bou
    
     } 
  }
+
+
+
+ 
   void drop(int stackCount){
     pos.y +=velocity.y;
     velocity.y =5; //Drop speed

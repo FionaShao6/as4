@@ -22,7 +22,15 @@ void setup(){
  down = new ArrayList<Rect>();
  currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat initial rect
 }
-
+void shiftRectsDown(){
+  for(int i =0; i<down.size(); i++){
+    Rect rect = down.get(i);
+    rect.pos.y +=30;//move down 30
+  }
+  if(dropping){
+   currentRect.pos.y +=30; 
+  }
+ }
 void draw(){
  background(106,151,188);
  image(photo,0,0);
@@ -47,6 +55,13 @@ for(int i=0;i<down.size();i++)  {  //This loop show the rect that has fallen
         Rect previousRect = down.get(down.size()-1);
         currentRect.trimExcess(previousRect);//cut the excess part
       }
+      
+      if(down.size()>=7){
+        down.remove(0);//delete the first rect
+        shiftRectsDown();
+        
+      }
+      
       down.add(currentRect);//Current rect add to already dropped list
       dropping = false; 
       
@@ -108,6 +123,7 @@ void gameResult(){
  }
  
 }
+
 void hintText(){  //The text after the game ends, used to explain the player's game results
   textSize(20);
   String s ="Click the mouse to drop the cake, and see how big the cake can be.";
