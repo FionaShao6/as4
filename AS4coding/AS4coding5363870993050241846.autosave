@@ -1,5 +1,5 @@
 ArrayList<Rect> down;//Rectangles that have fallen and stacked together
- ArrayList<Rect> allRects;
+
 int rectWidth= 200;//Initial rectangle width
 int maxRectCount = 100;//Generate up to 100 rectangles
 
@@ -24,11 +24,6 @@ void setup(){
  
  down = new ArrayList<Rect>();
  currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat initial rect
- 
- allRects = new ArrayList<Rect>();
-
-
- 
 }
 void shiftRectsDown(){
   for(int i =0; i<down.size(); i++){
@@ -52,10 +47,7 @@ void draw(){
   Rect rect = down.get(i);
   rect.display(); 
    }
-  for (int i = 0; i < down.size(); i++) {
-      Rect rect = down.get(i);
-      rect.display();
-    }
+  
   
  if(!gameOver){ // If the game is not over, 
    hintText();  //display the prompt text,
@@ -72,8 +64,8 @@ void draw(){
         currentRect.trimExcess(previousRect);//cut the excess part
       }
       
-     if(down.size()>=7){
-        allRects.add(down.remove(0));//delete the first rect,
+      if(down.size()>=7){
+        down.remove(0);//delete the first rect
         shiftRectsDown();
         
       }
@@ -88,7 +80,7 @@ void draw(){
   }
   else{
     rectWidth = (int)currentRect.w;//Use the new rect (after being cut off)
-    iniSpeed += 0.4;  //Move faster
+    iniSpeed += 0.5;  //Move faster
     currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat new rect through class Rect
    
    }
@@ -98,12 +90,13 @@ void draw(){
    gameResult();
    fill(0);
    textSize(24);
-   int topCakeCount = down.size()+allRects.size();//Rect count
-   
-   text(topCakeCount +" Layer Cake! ", 120, height / 8);
+   int topCakeCount = down.size();//Rect count
+   float finalWidth = down.get(down.size()-1).w;
+   text(topCakeCount +"Layer Cake! "+"Final Width:"+ finalWidth+"!", 60, height / 8);
 
-  }
  }
+ 
+}
 }
 void mousePressed(){
   if(startPage){
@@ -111,39 +104,14 @@ void mousePressed(){
     startPage = false;//close the start page, begin to play
     dropping = false;
    }
-  } else if(!dropping&&!gameOver){//If you are not on the start page and the game is not over
+    
+  }else if(!dropping&&!gameOver){
    dropping = true; //Start dropping
   }
 
 }
 void gameResult(){
- float totalHeight = 30 * down.size(); 
- float scaleFactor = 1;
-if (totalHeight > 200) {
-  scaleFactor = 300 / totalHeight; 
-}
-
-for (int i = 0; i < down.size(); i++) {
-  Rect rect = down.get(i);
-  rect.w *= scaleFactor; 
-  rect.rectHeight *= scaleFactor;
-}
-
-
-totalHeight = 30 * down.size() * scaleFactor;
-
-
-float startY = 200 - totalHeight / 2;
-
-
-for (int i = 0; i < down.size(); i++) {
-  Rect rect = down.get(i); 
-
-  rect.pos.y = startY; 
-  startY += -rect.rectHeight * scaleFactor; 
-  rect.display(); 
-}
-
+  
   //Drawed rainbaow curtain
   fill(253,90,109);
  arc(0,0,400,140,0,PI/2); 
@@ -158,14 +126,14 @@ for (int i = 0; i < down.size(); i++) {
  arc(0,0,211,28,0,PI/2); 
  arc(400,0,201,29,PI/2,PI);  
  
- //Draw stars
+ //Draw starts
  for(int i = 0; i < 6; i++){   //Using for loop
    
-  float starX = random(width);  //The positions of the stars appear randomly
-  float starY = random(height);
+  float startX = random(width);  //The positions of the stars appear randomly
+  float startY = random(height);
   float size = random(10,30);//The size is also random
   
-  drawStar(starX,starY,size); 
+  drawStart(startX,startY,size); 
  }
  
 }
@@ -178,7 +146,7 @@ void hintText(){  //The text after the game ends, used to explain the player's g
   
 }
 
-void drawStar(float x, float y, float size){
+void drawStart(float x, float y, float size){
   //I set the center coordinates of the star to (x, y) and the overall size to float size.
   
   beginShape();  //This is the formula for the positions of the vertices and the center of a star
