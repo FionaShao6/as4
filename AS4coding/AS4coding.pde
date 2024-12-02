@@ -9,7 +9,6 @@ boolean hintText = false;//Hint text, disappears after the game ends
 boolean screenDwon = false;//Determine the statement of the screen down
 boolean startPage = true;//determine the start page.
 startPage page;
-
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
 
 PImage photo;
@@ -103,8 +102,11 @@ void mousePressed(){
   if(startPage){
    if(mouseX>150 && mouseX<250&&mouseY>200 &&mouseY<250){//the rect area
     startPage = false;//close the start page, begin to play
+    dropping = true;
    }
-  }else if(!dropping&&!gameOver){
+    
+  }
+  if(!dropping&&!gameOver){
    dropping = true; //Start dropping
   }
 
