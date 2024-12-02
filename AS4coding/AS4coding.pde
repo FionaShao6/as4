@@ -1,5 +1,6 @@
 ArrayList<Rect> down;//Rectangles that have fallen and stacked together
  ArrayList<Rect> allRects;
+
 int rectWidth= 200;//Initial rectangle width
 int maxRectCount = 100;//Generate up to 100 rectangles
 
@@ -9,13 +10,18 @@ boolean hintText = false;//Hint text, disappears after the game ends
 boolean screenDwon = false;//Determine the statement of the screen down
 boolean startPage = true;//determine the start page.
 startPage page;
+boolean restartPressed = false;//Determine whether the restart button is clicked
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
-
+PImage restart;
 PImage photo;
 Rect currentRect;//The rect currently moving
 
 void setup(){
  size(400,400); 
+ 
+ restart = loadImage("26.png");//This is the restart button
+ restart.resize(100,100);
+ 
  page = new startPage();
  page.init();
  photo = loadImage("bk2.jpg");
@@ -113,10 +119,14 @@ void mousePressed(){
    }
   } else if(!dropping&&!gameOver){//If you are not on the start page and the game is not over
    dropping = true; //Start dropping
+  }else if(gameOver){
+   if (mouseX >150 && mouseX < 250 && mouseY >300 && mouseY < 400){
+    restartGame(); 
+   }
   }
-
 }
 void gameResult(){
+
  float totalHeight = 30 * down.size(); 
  float scaleFactor = 1;
 if (totalHeight > 200) {
@@ -144,6 +154,7 @@ for (int i = 0; i < down.size(); i++) {
   rect.display(); 
 }
 
+
   //Drawed rainbaow curtain
   fill(253,90,109);
  arc(0,0,400,140,0,PI/2); 
@@ -167,7 +178,7 @@ for (int i = 0; i < down.size(); i++) {
   
   drawStar(starX,starY,size); 
  }
- 
+ image(restart,150,300);
 }
 
 void hintText(){  //The text after the game ends, used to explain the player's game results
@@ -192,4 +203,18 @@ void drawStar(float x, float y, float size){
   vertex(x - size / 2, y); 
   vertex(x - 0.15 * size, y - 0.15 * size); 
   endShape(CLOSE); 
+}
+
+void restartGame(){
+  allRects.clear();  // Clear all rectangles
+   down.clear();  // Clear the dropped rectangle
+  
+  rectWidth = 200;  // Reset the initial width of the rectangle
+  iniSpeed = 3;  // Reset initial speed
+  
+  gameOver = false;  // Reset game over flag
+  dropping = false;  // Reset the rectangle drop flag
+  
+  currentRect = new Rect(0, 0, rectWidth, iniSpeed); 
+  
 }

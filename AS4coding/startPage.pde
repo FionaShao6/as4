@@ -46,6 +46,8 @@ class startPage{
    textSize(35);
    text("Play",169,235);
    
+
+  
   }
   
   void cloudDisplay(){
