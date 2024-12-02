@@ -8,7 +8,7 @@ boolean gameOver = false;//Determine if the game is over
 boolean hintText = false;//Hint text, disappears after the game ends
 boolean screenDwon = false;//Determine the statement of the screen down
 boolean startPage = true;//determine the start page.
-startPage sp = new startPage();
+startPage page;
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
 
 PImage photo;
@@ -16,6 +16,8 @@ Rect currentRect;//The rect currently moving
 
 void setup(){
  size(400,400); 
+ page = new startPage();
+ page.init();
  photo = loadImage("bk2.jpg");
  noStroke();
  
@@ -35,7 +37,7 @@ void shiftRectsDown(){
 
 void draw(){
   if(startPage){
-    sp.start();
+  page.start();
   }else{
      background(106,151,188);
   image(photo,0,0);
