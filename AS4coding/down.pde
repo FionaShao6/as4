@@ -2,7 +2,6 @@
 class Rect{
   PVector pos;//Rect's x and y(position)
   PVector velocity;//Left and right movement speed
-  
   float w;//rect's width
  
   float rectHeight=30;//I fixed the each rect's height=30
@@ -44,10 +43,10 @@ void move(){ //The rect at the top moves left and right, hits the border and bou
     
     noStroke();
     rect(pos.x,pos.y,w,10);
-   
-   
     } 
+     endShape();
  }
+
 
 
 

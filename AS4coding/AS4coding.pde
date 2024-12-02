@@ -1,5 +1,6 @@
 ArrayList<Rect> down;//Rectangles that have fallen and stacked together
-
+ ArrayList<Rect> allRects;
+ 
 int rectWidth= 200;//Initial rectangle width
 int maxRectCount = 100;//Generate up to 100 rectangles
 
@@ -9,13 +10,18 @@ boolean hintText = false;//Hint text, disappears after the game ends
 boolean screenDwon = false;//Determine the statement of the screen down
 boolean startPage = true;//determine the start page.
 startPage page;
+boolean restartPressed = false;//Determine whether the restart button is clicked
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
-
+PImage restart;
 PImage photo;
 Rect currentRect;//The rect currently moving
 
 void setup(){
  size(400,400); 
+ 
+ restart = loadImage("26.png");//This is the restart button
+ restart.resize(100,100);
+ 
  page = new startPage();
  page.init();
  photo = loadImage("bk2.jpg");
@@ -24,6 +30,11 @@ void setup(){
  
  down = new ArrayList<Rect>();
  currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat initial rect
+ 
+ allRects = new ArrayList<Rect>();
+
+
+ 
 }
 void shiftRectsDown(){
   for(int i =0; i<down.size(); i++){
@@ -47,7 +58,10 @@ void draw(){
   Rect rect = down.get(i);
   rect.display(); 
    }
-  
+  for (int i = 0; i < down.size(); i++) {
+      Rect rect = down.get(i);
+      rect.display();
+    }
   
  if(!gameOver){ // If the game is not over, 
    hintText();  //display the prompt text,
@@ -64,8 +78,8 @@ void draw(){
         currentRect.trimExcess(previousRect);//cut the excess part
       }
       
-      if(down.size()>=7){
-        down.remove(0);//delete the first rect
+     if(down.size()>=7){
+        allRects.add(down.remove(0));//delete the first rect,
         shiftRectsDown();
         
       }
@@ -80,7 +94,7 @@ void draw(){
   }
   else{
     rectWidth = (int)currentRect.w;//Use the new rect (after being cut off)
-    iniSpeed += 0.5;  //Move faster
+    iniSpeed += 0.4;  //Move faster
     currentRect = new Rect(0,0,rectWidth,iniSpeed);//Creat new rect through class Rect
    
    }
@@ -90,13 +104,12 @@ void draw(){
    gameResult();
    fill(0);
    textSize(24);
-   int topCakeCount = down.size();//Rect count
-   float finalWidth = down.get(down.size()-1).w;
-   text(topCakeCount +"Layer Cake! "+"Final Width:"+ finalWidth+"!", 60, height / 8);
+   int topCakeCount = down.size()+allRects.size();//Rect count
+   
+   text(topCakeCount +" Layer Cake! ", 120, height / 8);
 
+  }
  }
- 
-}
 }
 void mousePressed(){
   if(startPage){
@@ -106,11 +119,14 @@ void mousePressed(){
    }
   } else if(!dropping&&!gameOver){//If you are not on the start page and the game is not over
    dropping = true; //Start dropping
+  }else if(gameOver){
+   if (mouseX >150 && mouseX < 250 && mouseY >300 && mouseY < 400){
+    restartGame(); 
+   }
   }
-
 }
 void gameResult(){
-  
+
   //Drawed rainbaow curtain
   fill(253,90,109);
  arc(0,0,400,140,0,PI/2); 
@@ -125,16 +141,16 @@ void gameResult(){
  arc(0,0,211,28,0,PI/2); 
  arc(400,0,201,29,PI/2,PI);  
  
- //Draw starts
+ //Draw stars
  for(int i = 0; i < 6; i++){   //Using for loop
    
-  float startX = random(width);  //The positions of the stars appear randomly
-  float startY = random(height);
+  float starX = random(width);  //The positions of the stars appear randomly
+  float starY = random(height);
   float size = random(10,30);//The size is also random
   
-  drawStart(startX,startY,size); 
+  drawStar(starX,starY,size); 
  }
- 
+ image(restart,150,300);
 }
 
 void hintText(){  //The text after the game ends, used to explain the player's game results
@@ -145,7 +161,7 @@ void hintText(){  //The text after the game ends, used to explain the player's g
   
 }
 
-void drawStart(float x, float y, float size){
+void drawStar(float x, float y, float size){
   //I set the center coordinates of the star to (x, y) and the overall size to float size.
   
   beginShape();  //This is the formula for the positions of the vertices and the center of a star
@@ -159,4 +175,18 @@ void drawStart(float x, float y, float size){
   vertex(x - size / 2, y); 
   vertex(x - 0.15 * size, y - 0.15 * size); 
   endShape(CLOSE); 
+}
+
+void restartGame(){
+  allRects.clear();  // Clear all rectangles
+   down.clear();  // Clear the dropped rectangle
+  
+  rectWidth = 200;  // Reset the initial width of the rectangle
+  iniSpeed = 3;  // Reset initial speed
+  
+  gameOver = false;  // Reset game over flag
+  dropping = false;  // Reset the rectangle drop flag
+  
+  currentRect = new Rect(0, 0, rectWidth, iniSpeed); 
+  
 }
