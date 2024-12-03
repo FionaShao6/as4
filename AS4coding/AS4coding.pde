@@ -14,10 +14,20 @@ boolean restartPressed = false;//Determine whether the restart button is clicked
 float iniSpeed = 3;//Set up initial speed, the speed behind is getting faster and faster
 PImage restart;
 PImage photo;
+import processing.sound.*;//https://processing.org/reference/libraries/sound/SoundFile.html
+
+SoundFile spMusic;//Start page music
+SoundFile dropMusic;//
+
 Rect currentRect;//The rect currently moving
 
 void setup(){
  size(400,400); 
+ spMusic = new SoundFile(this, "starPageMusic.mp3");
+
+  spMusic.loop(); // 循环播放启动页面音乐
+
+ dropMusic = new SoundFile(this,"collision.wav");//Sound file
  
  restart = loadImage("26.png");//This is the restart button
  restart.resize(100,100);
@@ -47,6 +57,7 @@ void shiftRectsDown(){
  }
 
 void draw(){
+  
   if(startPage){
   page.start();
   }else{
@@ -76,6 +87,7 @@ void draw(){
       if(!down.isEmpty()){  ////https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html//Check if have any dropped rect
         Rect previousRect = down.get(down.size()-1);
         currentRect.trimExcess(previousRect);//cut the excess part
+      
       }
       
      if(down.size()>=7){
@@ -116,45 +128,21 @@ void mousePressed(){
    if(mouseX>150 && mouseX<250&&mouseY>200 &&mouseY<250){//the rect area
     startPage = false;//close the start page, begin to play
     dropping = false;
+    
+    spMusic.stop();//Stop background music when game is starts
    }
   } else if(!dropping&&!gameOver){//If you are not on the start page and the game is not over
    dropping = true; //Start dropping
+     dropMusic.play();
   }else if(gameOver){
-   if (mouseX >150 && mouseX < 250 && mouseY >300 && mouseY < 400){
+   if (mouseX >150 && mouseX < 250 && mouseY >120 && mouseY < 220){
     restartGame(); 
    }
   }
 }
 void gameResult(){
 
- float totalHeight = 30 * down.size(); 
- float scaleFactor = 1;
-if (totalHeight > 200) {
-  scaleFactor = 300 / totalHeight; 
-}
-
-for (int i = 0; i < down.size(); i++) {
-  Rect rect = down.get(i);
-  rect.w *= scaleFactor; 
-  rect.rectHeight *= scaleFactor;
-}
-
-
-totalHeight = 30 * down.size() * scaleFactor;
-
-
-float startY = 200 - totalHeight / 2;
-
-
-for (int i = 0; i < down.size(); i++) {
-  Rect rect = down.get(i); 
-
-  rect.pos.y = startY; 
-  startY += -rect.rectHeight * scaleFactor; 
-  rect.display(); 
-}
-
-
+ 
   //Drawed rainbaow curtain
   fill(253,90,109);
  arc(0,0,400,140,0,PI/2); 
@@ -178,7 +166,7 @@ for (int i = 0; i < down.size(); i++) {
   
   drawStar(starX,starY,size); 
  }
- image(restart,150,300);
+ image(restart,150,120);
 }
 
 void hintText(){  //The text after the game ends, used to explain the player's game results

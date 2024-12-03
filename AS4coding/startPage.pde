@@ -12,9 +12,9 @@ class startPage{
     cloudVelocity = new PVector[cloudNumber];
     
      
-     cloudPosi[0] = new PVector(20,0); 
+     cloudPosi[0] = new PVector(297,0); 
      cloudPosi[1] = new PVector(-167,81); 
-     cloudPosi[2] = new PVector(195,136);
+     cloudPosi[2] = new PVector(135,150);
      
      cloudVelocity[0] = new PVector(0.5,0);
      cloudVelocity[1] = new PVector(0.5,0);
@@ -25,18 +25,18 @@ class startPage{
     cloud[1] = loadImage("cloud_shape2_2.png");
     cloud[2] = loadImage("cloud_shape2_3.png");
     
-     cloud[0].resize(201,85);
-     cloud[1].resize(225,85);
-     cloud[2].resize(156,62); 
+     cloud[0].resize(150,78);
+     cloud[1].resize(164,74);
+     cloud[2].resize(112,48); 
   }
   void start(){
-    background = loadImage("bg.png");
+    background = loadImage("bk3.jpg");
    background.resize(400,400);
    image(background,0,0); 
    
    cloudDisplay();
    cloudMove();
-   
+  /* 
    fill(255);
    rect(150,200,100,50);
    fill(255,80,190);
@@ -46,7 +46,7 @@ class startPage{
    textSize(35);
    text("Play",169,235);
    
-
+*/
   
   }
   
